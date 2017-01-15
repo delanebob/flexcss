@@ -1,0 +1,413 @@
+@mixin box-sizing($box-model) {
+	-webkit-box-sizing: $box-model;
+	-moz-box-sizing: $box-model;
+	box-sizing: $box-model;
+}
+
+$media-sm:35.5em;
+$media-md:48em;
+$media-lg:62em;
+$media-xl:75em;
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+[hidden],
+template {
+  display: none;
+}
+
+a {
+  background-color: transparent;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+dfn {
+  font-style: italic;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+img {
+  border: 0;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+figure {
+  margin: 1em 40px;
+}
+
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+pre {
+  overflow: auto;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit; 
+  margin: 0; 
+}
+
+button {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+html input[type="button"], 
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+input {
+  line-height: normal;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+  border: 0;
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+}
+
+optgroup {
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+/*Everything*/
+
+.flex-5g, .flex-24g{
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flexbox;
+	-webkit-flex-flow: row wrap;
+	-ms-flex-flow: row wrap;
+	flex-flow: row wrap;
+	word-wrap: break-word;
+	@include box-sizing(border-box);
+}
+
+.flex-5g{
+	@for $i from 1 through 5 {
+	  &>.flex-#{$i} { width: (100%/5)*$i; }
+	}
+	@for $i from 1 through 4 {
+	  &>.flex-off-#{$i} { margin-left: (100%/5)*$i; }
+	}
+}
+
+.flex-24g{
+	@for $i from 1 through 24 {
+	  &>.flex-#{$i} { width: (100%/24)*$i; }
+	}
+	@for $i from 1 through 23 {
+	  &>.flex-off-#{$i} { margin-left: (100%/24)*$i; }
+	}
+}
+
+%all-flex-cols {
+	display:inline-block;
+	@include box-sizing(border-box);
+	vertical-align:top;
+}
+
+@for $i from 1 through 24 {
+	.flex-#{$i} { @extend %all-flex-cols;}
+}
+
+svg.responsive, img.responsive{
+	max-width:100%;
+}
+
+video {
+  width: 100%	!important;
+  height: auto	!important;
+}
+
+.flex-vid{
+	padding-bottom: 56.25%;
+}
+
+.flex-vid-4x3{
+	padding-bottom: 75%;
+}
+
+.flex-vid, .flex-vid-4x3 {
+	position: relative;
+	height: 0;
+
+	object, embed, iframe{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.hidden{
+	display: none !important;
+}
+
+/*Start of X-Small*/
+@media (max-width: (567/16)+em){
+	.hidden-xs{
+		display: none !important;
+	}
+}
+
+@media (min-width: $media-sm) and (max-width: (767/16)+em){
+	.hidden-sm{
+		display: none !important;
+	}
+}
+
+@media (min-width: $media-md) and (max-width: (991/16)+em){
+	.hidden-md{
+		display: none !important;
+	}
+}
+
+@media (min-width: $media-lg) and (max-width: (1200/16)+em){
+	.hidden-lg{
+		display: none !important;
+	}
+}
+
+/*Start of Small*/
+@media (min-width: $media-sm) {
+	.flex-5g{
+		@for $i from 1 through 5 {
+		  &>.flex-sm-#{$i} { width: (100%/5)*$i; }
+		}
+		@for $i from 1 through 4 {
+		  &>.flex-sm-off-#{$i} { margin-left: (100%/5)*$i; }
+		}
+	}
+	.flex-24g{
+		@for $i from 1 through 24 {
+		  &>.flex-sm-#{$i} { width: (100%/24)*$i; }
+		}
+		@for $i from 1 through 23 {
+		  &>.flex-sm-off-#{$i} { margin-left: (100%/24)*$i; }
+		}
+	}
+}
+
+/*Start of Medium*/
+@media (min-width: $media-md) {
+	.flex-5g{
+		@for $i from 1 through 5 {
+		  &>.flex-md-#{$i} { width: (100%/5)*$i; }
+		}
+		@for $i from 1 through 4 {
+		  &>.flex-md-off-#{$i} { margin-left: (100%/5)*$i; }
+		}
+	}
+	.flex-24g{
+		@for $i from 1 through 24 {
+		  &>.flex-md-#{$i} { width: (100%/24)*$i; }
+		}
+		@for $i from 1 through 23 {
+		  &>.flex-md-off-#{$i} { margin-left: (100%/24)*$i; }
+		}
+	}
+}
+
+/*Start of Large*/
+@media (min-width: $media-lg) {
+	.flex-5g{
+		@for $i from 1 through 5 {
+		  &>.flex-lg-#{$i} { width: (100%/5)*$i; }
+		}
+		@for $i from 1 through 4 {
+		  &>.flex-lg-off-#{$i} { margin-left: (100%/5)*$i; }
+		}
+	}
+	.flex-24g{
+		@for $i from 1 through 24 {
+		  &>.flex-lg-#{$i} { width: (100%/24)*$i; }
+		}
+		@for $i from 1 through 23 {
+		  &>.flex-lg-off-#{$i} { margin-left: (100%/24)*$i; }
+		}
+	}
+}
+
+/*Start of X-Large*/
+@media (min-width: $media-xl){
+	.flex-5g{
+		@for $i from 1 through 5 {
+		  &>.flex-xl-#{$i} { width: (100%/5)*$i; }
+		}
+		@for $i from 1 through 4 {
+		  &>.flex-xl-off-#{$i} { margin-left: (100%/5)*$i; }
+		}
+	}
+	.flex-24g{
+		@for $i from 1 through 24 {
+		  &>.flex-xl-#{$i} { width: (100%/24)*$i; }
+		}
+		@for $i from 1 through 23 {
+		  &>.flex-xl-off-#{$i} { margin-left: (100%/24)*$i; }
+		}
+	}
+	.hidden-xl{
+		display: none !important;
+	}
+}
