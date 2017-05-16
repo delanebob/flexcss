@@ -27,7 +27,7 @@ To use Sass, download **`scss/core.scss`** and place it in with your other Sass 
 @import 'core';
 //Rest off SCSS
 ```
-<br/>
+
 ### Using CSS
 To use both the CSS normal and minimised, you download either version of the **`core.css`** (minimised recommended as it's lighter). Next you link this file in the **`<meta>`** with the rest of your meta links like the example below. *Note: if you plan to use the normal and make updates to it the file, updates won't be as simple as swapping a file with the new one.*
 ```html
