@@ -29,7 +29,7 @@ To use Sass, download **`scss/core.scss`** and place it in with your other Sass 
 ```
 
 ### Using CSS
-To use both the CSS normal and minimised, you download either version of the **`core.css`** (minimised recommended as it's lighter). Next you link this file in the **`<meta>`** with the rest of your meta links like the example below. *Note: if you plan to use the normal and make updates to it the file, updates won't be as simple as swapping a file with the new one.*
+To use both the CSS normal and minimised, you download either version of the **`core.css`** (minimised recommended as it's lighter). Next you link this file in the **`<head>`** with the rest of your meta links like the example below. *Note: if you plan to use the normal and make updates to it the file, updates won't be as simple as swapping a file with the new one.*
 ```html
 <!doctype html>
 <html>
@@ -40,6 +40,8 @@ To use both the CSS normal and minimised, you download either version of the **`
     <title>Your page title</title>
 
     <link rel="stylesheet" href="/css/core.css">
+    <!-- Your other css files below -->
+    <link rel="stylesheet" href="/css/style.css">
   </head>
 
   <body>
