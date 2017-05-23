@@ -1,17 +1,31 @@
-/*flex.css v1.01*/
+/*flex.css v1.02*/
+
+$browser-context: 16;
+
+@function em($pixels, $context: $browser-context) {
+  @return ($pixels / $context) * 1em;
+}
+
 @mixin box-sizing($box-model) {
 	-webkit-box-sizing: $box-model;
 	-moz-box-sizing: $box-model;
 	box-sizing: $box-model;
 }
 
-$media-sm:568;
-$media-md:768;
-$media-lg:992;
-$media-xl:1200;
+$grids: (5, 24);
+
+$breakpoints: (
+	sm: 568,
+	md: 768,
+	lg: 992,
+	xl: 1200
+);
+
+//Utility variables
+$listOfKeys: map-keys($breakpoints);
+$lastKey: nth($listOfKeys, length($listOfKeys));
 
 html {
-  font-family: sans-serif;
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -59,11 +73,6 @@ pre {
 a {
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
-}
-
-a:active,
-a:hover {
-  outline-width: 0;
 }
 
 abbr[title] {
@@ -180,9 +189,7 @@ button:-moz-focusring,
 }
 
 fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
+  padding: 0.35em 0.75em 0.625em;
 }
 
 legend {
@@ -250,9 +257,9 @@ template {
   display: none;
 }
 
-/*Everything*/
+//Everything
 
-.flex-5g, .flex-24g{
+%all-flex-grid-groups{
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flexbox;
@@ -263,21 +270,15 @@ template {
 	@include box-sizing(border-box);
 }
 
-.flex-5g{
-	@for $i from 1 through 5 {
-	  &>.flex-#{$i} { width: (100%/5)*$i; }
-	}
-	@for $i from 1 through 4 {
-	  &>.flex-off-#{$i} { margin-left: (100%/5)*$i; }
-	}
-}
-
-.flex-24g{
-	@for $i from 1 through 24 {
-	  &>.flex-#{$i} { width: (100%/24)*$i; }
-	}
-	@for $i from 1 through 23 {
-	  &>.flex-off-#{$i} { margin-left: (100%/24)*$i; }
+@each $gridSize in $grids {
+	.flex-#{$gridSize}g{
+		@extend %all-flex-grid-groups;
+		@for $i from 1 through $gridSize {
+		  &>.flex-#{$i} { width: (100%/$gridSize)*$i; }
+		}
+		@for $i from 1 through ($gridSize - 1) {
+		  &>.flex-off-#{$i} { margin-left: (100%/$gridSize)*$i; }
+		}
 	}
 }
 
@@ -287,7 +288,8 @@ template {
 	vertical-align:top;
 }
 
-@for $i from 1 through 24 {
+//Apply to last/biggest grid element
+@for $i from 1 through nth($grids, length($grids)) {
 	.flex-#{$i} { @extend %all-flex-cols;}
 }
 
@@ -325,110 +327,43 @@ video {
 	display: none !important;
 }
 
-/*Start of X-Small*/
-@media (max-width: (($media-sm)-1)+px){
+@media (max-width: ( em(map-get($breakpoints, nth($listOfKeys, length($listOfKeys))) - 1) )) {
 	.hidden-xs{
 		display: none !important;
 	}
 }
 
-@media (min-width: $media-sm) and (max-width: (($media-md)-1)+px){
-	.hidden-sm{
-		display: none !important;
-	}
+@each $key, $size in $breakpoints {
+		//Apply to all keys apart from last
+		@if $key != $lastKey {
+			$nextKey: nth($listOfKeys, index($listOfKeys, $key) + 1);
+			@media (min-width: em($size)) and (max-width: (em(map-get($breakpoints, $nextKey) - 1))){
+				.hidden-#{$key}{
+					display: none !important;
+				}
+			}
+		}
 }
 
-@media (min-width: $media-md) and (max-width: (($media-lg)-1)+px){
-	.hidden-md{
-		display: none !important;
-	}
-}
-
-@media (min-width: $media-lg) and (max-width: (($media-xl)-1)+px){
-	.hidden-lg{
-		display: none !important;
-	}
-}
-
-/*Start of Small*/
-@media (min-width: $media-sm) {
-	.flex-5g{
-		@for $i from 1 through 5 {
-		  &>.flex-sm-#{$i} { width: (100%/5)*$i; }
+//Loop through all breakpoints
+@each $key, $size in $breakpoints {
+	//Set media query size for this breakpoint
+	@media (min-width: em($size)) {
+		@each $gridSize in $grids {
+			.flex-#{$gridSize}g{
+				@for $i from 1 through $gridSize {
+				  &>.flex-#{$key}-#{$i} { width: (100%/$gridSize)*$i; }
+				}
+				@for $i from 1 through ($gridSize - 1) {
+				  &>.flex-#{$key}-off-#{$i} { margin-left: (100%/$gridSize)*$i; }
+				}
+			}
 		}
-		@for $i from 1 through 4 {
-		  &>.flex-sm-off-#{$i} { margin-left: (100%/5)*$i; }
+		//Set display hidden in here if last breakpoint
+		@if $key == $lastKey {
+			.hidden-#{$key}{
+				display: none !important;
+			}
 		}
-	}
-	.flex-24g{
-		@for $i from 1 through 24 {
-		  &>.flex-sm-#{$i} { width: (100%/24)*$i; }
-		}
-		@for $i from 1 through 23 {
-		  &>.flex-sm-off-#{$i} { margin-left: (100%/24)*$i; }
-		}
-	}
-}
-
-/*Start of Medium*/
-@media (min-width: $media-md) {
-	.flex-5g{
-		@for $i from 1 through 5 {
-		  &>.flex-md-#{$i} { width: (100%/5)*$i; }
-		}
-		@for $i from 1 through 4 {
-		  &>.flex-md-off-#{$i} { margin-left: (100%/5)*$i; }
-		}
-	}
-	.flex-24g{
-		@for $i from 1 through 24 {
-		  &>.flex-md-#{$i} { width: (100%/24)*$i; }
-		}
-		@for $i from 1 through 23 {
-		  &>.flex-md-off-#{$i} { margin-left: (100%/24)*$i; }
-		}
-	}
-}
-
-/*Start of Large*/
-@media (min-width: $media-lg) {
-	.flex-5g{
-		@for $i from 1 through 5 {
-		  &>.flex-lg-#{$i} { width: (100%/5)*$i; }
-		}
-		@for $i from 1 through 4 {
-		  &>.flex-lg-off-#{$i} { margin-left: (100%/5)*$i; }
-		}
-	}
-	.flex-24g{
-		@for $i from 1 through 24 {
-		  &>.flex-lg-#{$i} { width: (100%/24)*$i; }
-		}
-		@for $i from 1 through 23 {
-		  &>.flex-lg-off-#{$i} { margin-left: (100%/24)*$i; }
-		}
-	}
-}
-
-/*Start of X-Large*/
-@media (min-width: $media-xl){
-	.flex-5g{
-		@for $i from 1 through 5 {
-		  &>.flex-xl-#{$i} { width: (100%/5)*$i; }
-		}
-		@for $i from 1 through 4 {
-		  &>.flex-xl-off-#{$i} { margin-left: (100%/5)*$i; }
-		}
-	}
-	.flex-24g{
-		@for $i from 1 through 24 {
-		  &>.flex-xl-#{$i} { width: (100%/24)*$i; }
-		}
-		@for $i from 1 through 23 {
-		  &>.flex-xl-off-#{$i} { margin-left: (100%/24)*$i; }
-		}
-	}
-	.hidden-xl{
-		display: none !important;
 	}
 }
